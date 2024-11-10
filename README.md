@@ -20,7 +20,7 @@ Bob,40,456 Elm St,Your City,Your State
 ```
 
 ```
-$ cat input.csv | python3 ../csv2gron
+$ cat input.csv | csv2gron
 json[0].name = "Alice";
 json[0].age = "30";
 json[0].address[0].city = "123 Main St";
@@ -36,7 +36,7 @@ json[1].address[1] = "Your State";
 `gron --ungron` command can convert the output to JSON format.
 
 ```
-$ cat input.csv | python3 ../csv2gron | gron --ungron
+$ cat input.csv | csv2gron | gron --ungron
 [
   {
     "address": [
@@ -62,7 +62,7 @@ $ cat input.csv | python3 ../csv2gron | gron --ungron
 -l option can specify the root object name.
 
 ```
-$ cat input.csv | python3 ../csv2gron -l people
+$ cat input.csv | csv2gron -l people
 json.people[0].name = "Alice";
 json.people[0].age = "30";
 json.people[0].address[0] = "123 Main St";
@@ -76,3 +76,29 @@ json.people[1].address[2] = "Your State";
 ```
 
 
+## Advanced
+
+If header ends with `[]`, it will be treated as an array of string.
+
+input2.csv
+```
+.name,.age,.test[]
+Alice,30,"aaa,bbb,ccc"
+Bob,40,"aaa,bbb,ccc"
+```
+
+Cell value is split by comma and each value is stored in an array.
+
+```
+$ cat input2.csv | csv2gron
+json[0].name = "Alice";
+json[0].age = "30";
+json[0].test[0] = "aaa";
+json[0].test[1] = "bbb";
+json[0].test[2] = "ccc";
+json[1].name = "Bob";
+json[1].age = "40";
+json[1].test[0] = "aaa";
+json[1].test[1] = "bbb";
+json[1].test[2] = "ccc";
+```

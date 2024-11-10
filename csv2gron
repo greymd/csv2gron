@@ -10,8 +10,18 @@ def csv_to_gron(input_file, root_name="json"):
     for row_index, row in enumerate(reader):
         for col_index in valid_columns:
             header = headers[col_index]
-            cell = row[col_index].replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
-            print(f'json{root_name}[{row_index}]{header} = "{cell}";')
+            cell = row[col_index].strip().replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+            # if cell is empty, don't print it
+            if not cell:
+                continue
+            # if header ends with '[]', it's an array of string
+            if header.endswith("[]"):
+                header = header[:-2]
+                # Separate the array elements by comma
+                for i, element in enumerate(cell.split(",")):
+                    print(f'json{root_name}[{row_index}]{header}[{i}] = "{element.strip()}";')
+            else:
+                print(f'json{root_name}[{row_index}]{header} = "{cell}";')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert CSV to gron-like format.")

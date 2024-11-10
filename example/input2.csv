@@ -1,0 +1,3 @@
+.name,.age,.test[]
+Alice,30,"aaa,bbb,ccc"
+Bob,40,"aaa,bbb,ccc"
