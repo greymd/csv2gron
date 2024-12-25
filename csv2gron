@@ -21,7 +21,9 @@ def csv_to_gron(input_file, root_name="json"):
                 for i, element in enumerate(cell.split(",")):
                     print(f'json{root_name}[{row_index}]{header}[{i}] = "{element.strip()}";')
             else:
-                if cell.lower() in ["true", "false"] or cell.isnumeric():
+                if cell.lower() in ["true", "false"]:
+                    print(f'json{root_name}[{row_index}]{header} = {cell.lower()};')
+                elif cell.isnumeric():
                     print(f'json{root_name}[{row_index}]{header} = {cell};')
                 else:
                     print(f'json{root_name}[{row_index}]{header} = "{cell}";')
